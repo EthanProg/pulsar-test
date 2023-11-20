@@ -1,9 +1,6 @@
 package com.test.pulsar;
 
-import org.apache.pulsar.client.api.PulsarClient;
-import org.apache.pulsar.client.api.PulsarClientException;
-import org.apache.pulsar.client.api.Schema;
-import org.apache.pulsar.client.api.SubscriptionType;
+import org.apache.pulsar.client.api.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
@@ -58,5 +55,10 @@ class MultiSubs {
                 .subscriptionType(SubscriptionType.Shared)
                 .subscriptionName("subscription-1")
                 .subscribe();
+
+        var messages = consumer.batchReceive();
+        for (var message : messages) {
+            System.out.println("Message received: " + message.getValue());
+        }
     }
 }
