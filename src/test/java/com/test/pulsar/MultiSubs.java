@@ -22,7 +22,10 @@ class MultiSubs {
 
         topics.forEach(a -> {
             try {
-                pulsarClient.newProducer(Schema.STRING).topic(a).create()
+                pulsarClient.newProducer(Schema.STRING)
+                        .compressionType(CompressionType.LZ4)
+                        .topic(a)
+                        .create()
                         .newMessage()
                         .key("k1")
                         .property("p1", "v1")
