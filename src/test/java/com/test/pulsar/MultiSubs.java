@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-class MultiSubs {
-
-    protected static final String pulsarUrl = "pulsar://10.14.0.208:30363/";
-    protected static final String topicPrefix = "persistent://test1/test-namespace/";
+class MultiSubs extends BasicTest {
 
     @Test
     void test1() throws PulsarClientException {
