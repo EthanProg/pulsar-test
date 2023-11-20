@@ -46,22 +46,25 @@ import java.util.UUID;
  *
  */
 class BasicTest {
+
+    protected static final String pulsarUrl = "pulsar://10.14.0.208:30363/";
+    protected static final String topicPrefix = "persistent://test1/test-namespace/";
+
     @Test
     void test1() throws PulsarClientException {
-        var pulsarUrl = "pulsar://10.14.0.208:30363/";
-        var topic = "persistent://test1/test-namespace/topic1";
+        var topic = topicPrefix + "topic1";
 
         var pulsarClient = org.apache.pulsar.client.api.PulsarClient.builder().serviceUrl(pulsarUrl).build();
         var producer = pulsarClient.newProducer(Schema.STRING).topic(topic).create();
         var consumer = pulsarClient.newConsumer(Schema.STRING).topic(topic).subscriptionName("test-subscription").subscribe();
 
-        ackAllPreviousMesasges(consumer);
+        // ackAllPreviousMesasges(consumer);
 
         var id = String.valueOf(UUID.randomUUID());
 
         producer.newMessage()
-                .key("document-compress-async")
-                .property("compressAsyncTraceId", id)
+                .key("key1")
+                .property("p1", id)
                 .value(id)
                 .send();
 
@@ -75,7 +78,7 @@ class BasicTest {
         Assertions.assertEquals(id, consumeId);
     }
 
-    void ackAllPreviousMesasges(Consumer<String> consumer) throws PulsarClientException {
+    protected void ackAllPreviousMesasges(Consumer<String> consumer) throws PulsarClientException {
         while (true) {
             Message<String> msg = consumer.receive();
             try {
@@ -83,6 +86,20 @@ class BasicTest {
                 System.out.printf("Message received: %s", msg.getValue());
                 // Acknowledge the message cumulatively
                 consumer.acknowledgeCumulative(msg.getMessageId());
+            } catch (Exception e) {
+                // Handle the exception
+            }
+        }
+    }
+
+    protected void ackMesasges(Consumer<String> consumer) throws PulsarClientException {
+        while (true) {
+            Message<String> msg = consumer.receive();
+            try {
+                // Process the message
+                System.out.printf("Message received: %s", msg.getValue());
+                // Acknowledge the message cumulatively
+                consumer.acknowledge(msg.getMessageId());
             } catch (Exception e) {
                 // Handle the exception
             }
