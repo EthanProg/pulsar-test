@@ -3,15 +3,23 @@ package com.test.pulsar;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.api.Schema;
+import org.apache.pulsar.client.api.SubscriptionType;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-class MultiSubs extends BasicTest {
+class MultiSubs {
+
+    protected static final String pulsarUrl = "pulsar://10.14.0.208:30363/";
+    protected static final String topicPrefix = "persistent://test1/test-namespace/";
+
     @Test
     void test1() throws PulsarClientException {
-        var topics = Stream.of(new String[]{"account-topic1", "account-topic2"}).map(a -> topicPrefix + a).toList();
+
+        System.out.println("Hello World!");
+
+        var topics = Stream.of(new String[]{"acc-topic1", "acc-topic2"}).map(a -> topicPrefix + a).toList();
 
         var pulsarClient = PulsarClient.builder().serviceUrl(pulsarUrl).build();
 
@@ -43,14 +51,12 @@ class MultiSubs extends BasicTest {
 //                .topicsPattern(allTopicsInNamespace)
 //                .subscriptionName("subscription-1")
 //                .subscribe();
-        var someTopicsInNamespace = Pattern.compile(topicPrefix + ".*");
+        var someTopicsInNamespace = Pattern.compile(topicPrefix + "acc-.*");
 
         var consumer = pulsarClient.newConsumer(Schema.STRING)
                 .topicsPattern(someTopicsInNamespace)
+                .subscriptionType(SubscriptionType.Shared)
                 .subscriptionName("subscription-1")
                 .subscribe();
-
-
-        ackMesasges(consumer);
     }
 }

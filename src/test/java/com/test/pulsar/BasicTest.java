@@ -91,18 +91,4 @@ class BasicTest {
             }
         }
     }
-
-    protected void ackMesasges(Consumer<String> consumer) throws PulsarClientException {
-        while (true) {
-            Message<String> msg = consumer.receive();
-            try {
-                // Process the message
-                System.out.printf("Message received: %s", msg.getValue());
-                // Acknowledge the message cumulatively
-                consumer.acknowledge(msg.getMessageId());
-            } catch (Exception e) {
-                // Handle the exception
-            }
-        }
-    }
 }
