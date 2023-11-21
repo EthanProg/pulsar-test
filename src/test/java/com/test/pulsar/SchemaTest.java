@@ -17,7 +17,7 @@ class SchemaTest extends BasicTest {
         var topic = topicPrefix + "topic-schema";
 
         var pulsarClient = PulsarClient.builder().serviceUrl(pulsarUrl).build();
-        var producer = pulsarClient.newProducer(JSONSchema.of(User.class)).topic(topic).create();
+        var producer = pulsarClient.newProducer(Schema.JSON(User.class)).topic(topic).create();
         var consumer = pulsarClient.newConsumer(JSONSchema.of(User.class)).topic(topic)
                 .subscriptionName("test-schema-sub")
                 // SubscriptionInitialPosition.Earliest: Consumer starts consuming messages from the earliest available message in the topic.
