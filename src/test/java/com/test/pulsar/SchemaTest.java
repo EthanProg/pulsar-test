@@ -1,7 +1,7 @@
 package com.test.pulsar;
 
-import com.test.pulsar.bo.User1;
 import com.test.pulsar.bo.User;
+import com.test.pulsar.bo.User1;
 import com.test.pulsar.bo.User2;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;

@@ -1,7 +1,6 @@
 package com.test.pulsar;
 
 import org.apache.pulsar.client.api.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
