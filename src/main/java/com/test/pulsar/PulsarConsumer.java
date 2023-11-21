@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.SubscriptionType;
 import org.apache.pulsar.common.schema.SchemaType;
 import org.springframework.pulsar.annotation.PulsarListener;
+import org.springframework.pulsar.listener.AckMode;
 import org.springframework.stereotype.Service;
 
 import static com.test.pulsar.Constants.TOPIC;
@@ -18,7 +19,7 @@ public class PulsarConsumer {
             subscriptionName = "string-topic-subscription",
             topics = TOPIC,
             schemaType = SchemaType.AVRO,
-//            ackMode = AckMode.RECORD,
+            ackMode = AckMode.RECORD,
 //            properties = {"ackTimeout=60s"},
             deadLetterPolicy = "deadLetterPolicy",
             subscriptionType = SubscriptionType.Shared
