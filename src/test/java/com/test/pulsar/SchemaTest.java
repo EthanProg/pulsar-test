@@ -2,6 +2,7 @@ package com.test.pulsar;
 
 import com.test.pulsar.bo.User1;
 import com.test.pulsar.bo.User;
+import com.test.pulsar.bo.User2;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.api.Schema;
@@ -55,19 +56,52 @@ class SchemaTest extends BasicTest {
                 .subscriptionInitialPosition(SubscriptionInitialPosition.Latest)
                 .subscribe();
 
-        var user = new User1();
-        user.setName("Tom");
-        user.setAge(28);
+        var user = User1.builder().name("Tom").age(28).build();
         producer.send(user);
 
         var msg = consumer.receive();
         var userRec = msg.getValue();
 
         assert userRec.age == 28 && userRec.name.equals("Tom");
+
     }
 
+    /**
+     * Publish a new version of the schema
+     * But consume the messages with the old schema
+     * @throws PulsarClientException
+     */
     @Test
-    void test() {
+    void newVersion1() throws PulsarClientException {
+        var topic = topicPrefix + "topic-schema-avro";
 
+        var pulsarClient = PulsarClient.builder().serviceUrl(pulsarUrl).build();
+        var user2 = User2.builder().name("Tom").age(28).address("address1").build();
+        var producer2 = pulsarClient.newProducer(Schema.AVRO(User2.class)).topic(topic).create();
+        var consumer2 = pulsarClient.newConsumer(Schema.AVRO(User1.class)).topic(topic)
+                .subscriptionName("test-schema-sub-avro")
+                .subscriptionInitialPosition(SubscriptionInitialPosition.Latest)
+                .subscribe();
+        producer2.send(user2);
+
+        ackAllPreviousMesasges(consumer2);
+    }
+
+    /**
+     * Consume the messages with the new schema
+     * @throws PulsarClientException
+     */
+    @Test
+    void newVersion() throws PulsarClientException {
+        var topic = topicPrefix + "topic-schema-avro";
+
+        var pulsarClient = PulsarClient.builder().serviceUrl(pulsarUrl).build();
+
+        var consumer2 = pulsarClient.newConsumer(Schema.AVRO(User2.class)).topic(topic)
+                .subscriptionName("test-schema-sub-avro")
+                .subscriptionInitialPosition(SubscriptionInitialPosition.Latest)
+                .subscribe();
+
+        ackAllPreviousMesasges(consumer2);
     }
 }

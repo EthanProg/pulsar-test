@@ -17,7 +17,7 @@ PulsarClient client = PulsarClient.builder().serviceUrl(serviceUrl).build();
 Producer<MyData> producer = client.newProducer(Schema.JSON(MyData.class)).topic(topic).create();
 ```
 
-##Avro:
+## Avro:
 
 - Format: Avro is a binary serialization format that uses a compact binary representation.
 - Compact Binary: Avro's binary encoding is more compact compared to JSON, making it more efficient in terms of space.
@@ -32,7 +32,7 @@ PulsarClient client = PulsarClient.builder().serviceUrl(serviceUrl).build();
 Producer<MyAvroRecord> producer = client.newProducer(Schema.AVRO(MyAvroRecord.class)).topic(topic).create();
 ```
 
-Choosing Between JSONSchema and Avro:
+## Choosing Between JSONSchema and Avro:
 
 - If your data has a well-defined, stable schema, and you prefer a compact binary format for efficiency, Avro might be a good choice.
 - If your data has a flexible or evolving schema, and you prefer a human-readable format, JSONSchema could be more suitable.

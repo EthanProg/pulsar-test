@@ -75,14 +75,14 @@ class BasicTest {
         // Assertions.assertEquals(id, consumeId);
     }
 
-    protected void ackAllPreviousMesasges(Consumer<String> consumer) throws PulsarClientException {
+    protected <T> void ackAllPreviousMesasges(Consumer<T> consumer) throws PulsarClientException {
         while (true) {
-            Message<String> msg = consumer.receive();
+            Message<T> msg = consumer.receive();
             try {
                 // Process the message
                 System.out.printf("Message received: %s", msg.getValue());
                 // Acknowledge the message cumulatively
-                consumer.acknowledgeCumulative(msg.getMessageId());
+                // consumer.acknowledgeCumulative(msg.getMessageId());
             } catch (Exception e) {
                 // Handle the exception
             }
