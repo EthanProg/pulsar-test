@@ -17,7 +17,7 @@ public class PulsarController {
 
     @GetMapping("/test")
     public ResponseEntity<String> test() throws PulsarClientException {
-        producer.sendMessageToPulsarTopic(User1.builder().name("Tom").age(21).build());
+        producer.sendMessage(User1.builder().name("Tom").age(21).build());
         return ResponseEntity.ok().body("OK");
     }
 }

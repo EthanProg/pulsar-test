@@ -9,6 +9,7 @@ import org.apache.pulsar.client.api.Schema;
 import org.springframework.pulsar.core.PulsarTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.test.pulsar.Constants.TOPIC;
@@ -20,16 +21,18 @@ public class PulsarProducer {
 
     private final PulsarTemplate<User1> pulsarTemplate;
 
-    public void sendMessageToPulsarTopic(User1 user1) throws PulsarClientException {
+    public void sendMessage(User1 user1) throws PulsarClientException {
         pulsarTemplate.send(TOPIC, user1, Schema.AVRO(User1.class));
     }
 
-    public void sendMessageToPulsarTopicWithCustomizedParameters(User1 user) throws PulsarClientException {
-        pulsarTemplate.newMessage(user).withMessageCustomizer(mc -> {
-            mc.deliverAfter(10L, TimeUnit.SECONDS);
-        }).withProducerCustomizer(pc -> {
-            pc.accessMode(ProducerAccessMode.Shared);
-        }).send();
+    public void sendMessageWithCustomizer(User1 user) throws PulsarClientException {
+        pulsarTemplate.newMessage(user).withMessageCustomizer(mc ->
+                        mc.deliverAfter(10L, TimeUnit.SECONDS)
+                        .sequenceId(1L).key("key")
+                        .properties(Map.of("key", "value"))
+                ).withProducerCustomizer(pc ->
+                        pc.accessMode(ProducerAccessMode.Shared)
+                ).send();
     }
 
 }
