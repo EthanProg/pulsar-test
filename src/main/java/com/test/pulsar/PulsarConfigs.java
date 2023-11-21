@@ -1,12 +1,15 @@
 package com.test.pulsar;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.DeadLetterPolicy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.pulsar.core.ConsumerBuilderCustomizer;
 
 import static com.test.pulsar.Constants.USER_DEAD_LETTER_TOPIC;
 
 @Configuration
+@Slf4j
 public class PulsarConfigs {
 
 //    @Bean
@@ -23,4 +26,17 @@ public class PulsarConfigs {
                 .deadLetterTopic(USER_DEAD_LETTER_TOPIC)
                 .build();
     }
+
+    @Bean
+    ConsumerBuilderCustomizer<String> myCustomizer() {
+        return builder -> builder.consumerName("myConsumer");
+    }
+
+//    @Bean
+//    @Order(100)
+//    ProducerInterceptor firstInterceptor() {
+//
+//    }
+
+
 }

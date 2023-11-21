@@ -36,4 +36,13 @@ public class PulsarConsumer {
     public void userDlqTopicListener(User1 user) {
         log.info("Received user object in user-DLQ with email: {}", user.name);
     }
+
+    /**
+     * Customize the consumer
+     * @param message
+     */
+    @PulsarListener(topics = "hello-topic", consumerCustomizer = "myCustomizer")
+    public void listen(String message) {
+        log.info("Message Received: " + message);
+    }
 }
