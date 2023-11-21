@@ -16,7 +16,7 @@ import static com.test.pulsar.Constants.USER_DEAD_LETTER_TOPIC;
 public class PulsarConsumer {
 
     @PulsarListener(
-            subscriptionName = "string-topic-subscription",
+            subscriptionName = "topic-subscription-${custom.pod-name}",
             topics = TOPIC,
             schemaType = SchemaType.AVRO,
             ackMode = AckMode.RECORD,
