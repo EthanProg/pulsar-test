@@ -1,0 +1,7 @@
+spring:
+  pulsar:
+    client:
+      service-url: pulsar://10.14.0.208:30363/
+
+server:
+  port: 8888
