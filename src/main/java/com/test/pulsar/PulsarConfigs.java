@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.DeadLetterPolicy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.pulsar.core.ConsumerBuilderCustomizer;
 
 import static com.test.pulsar.Constants.USER_DEAD_LETTER_TOPIC;
 
@@ -27,10 +26,17 @@ public class PulsarConfigs {
                 .build();
     }
 
-    @Bean
-    ConsumerBuilderCustomizer<String> myCustomizer() {
-        return builder -> builder.consumerName("myConsumer");
-    }
+    /**
+     * If your application only has a single @PulsarListener and a single
+     * PulsarListenerConsumerBuilderCustomizer bean registered then the customizer will be automatically applied.
+     * @return
+     */
+//    @Bean
+//    ConsumerBuilderCustomizer<User1> myCustomizer() {
+//        return builder -> builder.consumerName("myConsumer")
+//                .subscriptionName("mySubscription")
+//                .subscriptionType(SubscriptionType.Shared);
+//    }
 
 //    @Bean
 //    @Order(100)
