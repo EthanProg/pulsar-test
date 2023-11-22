@@ -26,7 +26,7 @@ public class PulsarConsumer {
             schemaType = SchemaType.AVRO,
             ackMode = AckMode.RECORD,
 //            properties = {"ackTimeout=60s"},
-//            properties = { "subscriptionName=subscription-1", "topicNames=foo-1", "receiverQueueSize=5000" },
+//            properties = { "subscriptionName=subscription-1", "topicNames=foo-1", "receiverQueueSize=5000","negativeAckRedeliveryDelay=10ms" },
             deadLetterPolicy = "deadLetterPolicy",
             subscriptionType = SubscriptionType.Shared
     )
