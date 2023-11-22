@@ -28,6 +28,7 @@ public class PulsarConsumer {
 //            properties = {"ackTimeout=60s"},
 //            properties = { "subscriptionName=subscription-1", "topicNames=foo-1", "receiverQueueSize=5000","negativeAckRedeliveryDelay=10ms" },
             deadLetterPolicy = "deadLetterPolicy",
+//            concurrency = "3",
             subscriptionType = SubscriptionType.Shared
     )
     public void topicListener(User1 user1) {
