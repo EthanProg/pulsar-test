@@ -3,10 +3,8 @@ package com.test.pulsar;
 import com.test.pulsar.bo.User;
 import com.test.pulsar.bo.User1;
 import com.test.pulsar.bo.User2;
-import org.apache.pulsar.client.api.PulsarClient;
-import org.apache.pulsar.client.api.PulsarClientException;
-import org.apache.pulsar.client.api.Schema;
-import org.apache.pulsar.client.api.SubscriptionInitialPosition;
+import org.apache.pulsar.client.api.*;
+import org.apache.pulsar.client.api.schema.GenericRecord;
 import org.apache.pulsar.client.impl.schema.JSONSchema;
 import org.junit.jupiter.api.Test;
 
@@ -103,5 +101,27 @@ class SchemaTest extends BasicTest {
                 .subscribe();
 
         ackAllPreviousMesasges(consumer2);
+    }
+
+    @Test
+    void autoSchema() throws PulsarClientException {
+
+        var topic = topicPrefix + "topic-schema-avro";
+
+        var pulsarClient = PulsarClient.builder().serviceUrl(pulsarUrl).build();
+        var producer2 = pulsarClient.newProducer(Schema.AVRO(User2.class)).topic(topic).create();
+        Consumer<GenericRecord> pulsarConsumer = pulsarClient.newConsumer(Schema.AUTO_CONSUME()).topic(topic).subscriptionName("auto-sub").subscribe();
+
+        producer2.send(User2.builder().name("Tom").age(28).address("address1").build());
+        Message<GenericRecord> msg = pulsarConsumer.receive();
+        GenericRecord record = msg.getValue();
+        System.out.println("schema type:  " + record.getSchemaType());
+
+        record.getFields().forEach((field -> {
+            if (field.getName().equals("theNeedFieldName")) {
+                Object recordField = record.getField(field);
+                //Do some things
+            }
+        }));
     }
 }
