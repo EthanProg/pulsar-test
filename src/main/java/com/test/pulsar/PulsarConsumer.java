@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.SubscriptionType;
 import org.apache.pulsar.common.schema.SchemaType;
 import org.springframework.pulsar.annotation.PulsarListener;
+import org.springframework.pulsar.config.PulsarListenerEndpointRegistry;
 import org.springframework.pulsar.listener.AckMode;
+import org.springframework.pulsar.listener.PulsarMessageListenerContainer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import static com.test.pulsar.Constants.USER_DEAD_LETTER_TOPIC;
 @Service
 @Slf4j
 public class PulsarConsumer {
+
+    private PulsarListenerEndpointRegistry registry;
 
     @PulsarListener(
             // In this most basic form, when the subscriptionName is not provided on the @PulsarListener annotation an
@@ -33,6 +37,15 @@ public class PulsarConsumer {
     )
     public void topicListener(User1 user1) {
         log.info("Received message: {}", user1.name);
+    }
+
+    void restartPulsarContainer() {
+        // The id parameter passed to getListenerContainer is the container id -
+        // which will be the value of the @PulsarListener id attribute when pausing/resuming a @PulsarListener.
+        PulsarMessageListenerContainer container = registry.getListenerContainer("my-listener-id");
+        container.pause();
+        container.stop();
+        container.start();
     }
 
 
