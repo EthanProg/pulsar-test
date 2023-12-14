@@ -4,6 +4,7 @@ Pulsar function test and practice
 ### Deploy pulsar standalone:
 [Pulsar deployment](https://pulsar.apache.org/docs/3.1.x/getting-started-standalone/)
 ### Open the transaction feature:
+[Pulsar transactions](https://pulsar.apache.org/docs/3.1.x/txn-use/)
 ```
 //mandatory configuration, used to enable transaction coordinator
 transactionCoordinatorEnabled=true
@@ -31,6 +32,7 @@ bin/pulsar-admin topics create persistent://public/default/topic-schema-2-1
 ```bash
 bin/pulsar-client consume my-topic-2 -s 'my-subscription' -p Earliest -n 0
 ```
+
 
 
 ## ~~Use VP standalone Pulsar~~
