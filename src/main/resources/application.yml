@@ -1,7 +1,7 @@
 spring:
   pulsar:
     client:
-      service-url: ${PULSAR_URL:pulsar://10.14.0.208:30363/}
+      service-url: ${PULSAR_URL:pulsar://10.14.0.208:6650/}
 #    defaults:
 #      type-mappings:
 #        - message-type: com.acme.User
