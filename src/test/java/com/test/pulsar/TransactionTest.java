@@ -111,7 +111,7 @@ class TransactionTest {
             outputProducerOne.newMessage(txn).value("Hello Pulsar! outputTopicOne").send();
             outputProducerTwo.newMessage(txn).value("Hello Pulsar! outputTopicTwo").send();
 
-            var x = 1/0;
+            this.throwException();
 
             // Step 8: commit transactions.
             txn.commit().get();
@@ -133,6 +133,9 @@ class TransactionTest {
 
         message = outputConsumerTwo.receive();
         System.out.println("Receive transaction message: " + message.getValue());
+    }
+    void throwException() throws Exception {
+        throw new Exception("test");
     }
 }
 
