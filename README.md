@@ -2,6 +2,8 @@
 Pulsar function test and practice
 ## Set up standalone Pulsar
 ### Deploy pulsar standalone:
+[Install zookeeper](https://zookeeper.apache.org/doc/r3.3.3/zookeeperStarted.html#sc_InstallingSingleMode)
+```bash
 [Pulsar deployment](https://pulsar.apache.org/docs/3.1.x/getting-started-standalone/)
 ### Open the transaction feature:
 [Pulsar transactions](https://pulsar.apache.org/docs/3.1.x/txn-use/)
@@ -26,6 +28,10 @@ bin/pulsar-admin topics create persistent://public/default/topic-schema
 bin/pulsar-admin topics create persistent://public/default/topic-schema-avro
 
 bin/pulsar-admin topics create persistent://public/default/topic-schema-2-1
+
+bin/pulsar-admin topics create persistent://public/default/duplication-topic-1
+bin/pulsar-admin topics create persistent://public/default/deduplication-topic-1
+bin/pulsar-admin topics enable-deduplication persistent://public/default/deduplication-topic-1
 ```
 
 ### Check the messages:
